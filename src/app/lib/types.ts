@@ -7,6 +7,12 @@ export interface Hero {
 
 export interface About {
   description: string;
+  links?: Array<{
+    text: string;
+    url: string;
+    startIndex: number;
+    endIndex: number;
+  }>;
 }
 
 export interface Social {
@@ -54,12 +60,20 @@ export interface Writing {
 }
 
 export interface PortfolioData {
-  hero: Hero;
-  about: About;
-  contact: Contact;
-  experience: Experience[];
-  projects: Project[];
-  writing: Writing[];
+  hero?: Hero;
+  about?: About;
+  contact?: Contact;
+  experience?: Experience[];
+  projects?: Project[];
+  writing?: Writing[];
+  resumeUrl?: string | null;
 }
 
-export type PortfolioSection = keyof PortfolioData;
+export type PortfolioSection =
+  | "hero"
+  | "about"
+  | "contact"
+  | "experience"
+  | "projects"
+  | "writing"
+  | "resume";

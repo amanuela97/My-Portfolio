@@ -50,22 +50,22 @@ export function Sidebar({ hero, contact }: SidebarProps) {
   ].filter((icon) => icon.url); // Only show icons with URLs
 
   return (
-    <aside className="h-screen bg-slate-900 p-6 lg:p-8 flex flex-col">
+    <aside className="lg:h-screen bg-slate-900 p-6 lg:p-8 flex flex-col">
       <div className="flex flex-col items-center text-center">
         <Image
           src={hero.profileImageUrl || "/placeholder.webp"}
           alt={hero.name}
-          width={160}
-          height={160}
+          width={140}
+          height={140}
           className="rounded-full w-40 h-40 object-cover"
           priority
         />
-        <h1 className="text-3xl font-bold text-purple-400 mt-4">{hero.name}</h1>
+        <h1 className="text-4xl font-bold text-purple-400 mt-4">{hero.name}</h1>
         <h2 className="text-xl text-slate-300 mt-1">{hero.jobTitle}</h2>
         <p className="text-slate-400 text-sm mt-2">{hero.subtitle}</p>
 
         <nav className="hidden lg:block w-full mt-8">
-          <ul className="space-y-3 text-sm">
+          <ul className="space-y-3 text-sm font-bold">
             {navItems.map((item) => (
               <li key={item.id}>
                 <a
@@ -84,17 +84,17 @@ export function Sidebar({ hero, contact }: SidebarProps) {
         </nav>
       </div>
 
-      <div className="p-1 mt-4">
-        <div className="text-center space-y-2">
+      <div className="mt-auto pt-8 lg:pt-6">
+        <div className="text-center text-sm space-y-1">
           <a
             href={`mailto:${contact.email}`}
-            className="text-xsm text-slate-400 hover:text-purple-400 transition-colors block"
+            className="text-slate-400 hover:text-purple-400 transition-colors block"
           >
             {contact.email}
           </a>
           <a
             href={`tel:${contact.phone}`}
-            className="text-sm text-slate-400 hover:text-purple-400 transition-colors block"
+            className="text-slate-400 hover:text-purple-400 transition-colors block"
           >
             {contact.phone}
           </a>

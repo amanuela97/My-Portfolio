@@ -1,12 +1,14 @@
 import Image from "next/image";
 import { Experience as ExperienceType } from "../lib/types";
 import { Badge } from "./ui/badge";
+import { ResumeLink } from "./resume-link";
 
 interface ExperienceProps {
   experience?: ExperienceType[];
+  resumeUrl?: string | null;
 }
 
-export function Experience({ experience }: ExperienceProps) {
+export function Experience({ experience, resumeUrl }: ExperienceProps) {
   if (!experience?.length) return null;
 
   return (
@@ -49,6 +51,8 @@ export function Experience({ experience }: ExperienceProps) {
           </div>
         ))}
       </div>
+
+      <ResumeLink resumeUrl={resumeUrl} />
     </section>
   );
 }

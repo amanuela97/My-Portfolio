@@ -20,6 +20,8 @@ import {
   getDocs,
   QueryDocumentSnapshot,
   setDoc,
+  query,
+  limit,
 } from "firebase/firestore";
 
 const ALLOWED_EMAILS = process.env.NEXT_PUBLIC_ALLOWED_EMAILS?.split(",");
@@ -51,6 +53,7 @@ const initialPortfolioData: PortfolioData = {
   experience: [],
   projects: [],
   writing: [],
+  resumeUrl: null,
 };
 
 // Initialize portfolio data if it doesn't exist
@@ -63,7 +66,11 @@ const initializePortfolioData = async () => {
 
       if (!docSnap.exists()) {
         // Convert the data to a plain object before setting
-        const data = JSON.parse(JSON.stringify(initialPortfolioData[section]));
+        const data = JSON.parse(
+          JSON.stringify(
+            initialPortfolioData[section as keyof typeof initialPortfolioData]
+          )
+        );
         await setDoc(docRef, data);
         console.log(`Initialized ${section} section`);
       }
@@ -159,8 +166,9 @@ export const getPortfolioData = async (): Promise<Partial<PortfolioData>> => {
   try {
     // Check if collection exists and initialize if needed
     const collectionRef = collection(db, PORTFOLIO_COLLECTION);
+
     try {
-      const snapshot = await getDocs(collectionRef);
+      const snapshot = await getDocs(query(collectionRef, limit(1)));
 
       if (snapshot.empty) {
         console.log("No documents found, initializing portfolio data...");
@@ -182,46 +190,53 @@ export const getPortfolioData = async (): Promise<Partial<PortfolioData>> => {
               portfolioData[section] = data as Contact;
               break;
             case "experience":
-              portfolioData[section] = (data.items || []) as Experience[];
+              portfolioData[section] = data.items as Experience[];
               break;
             case "projects":
-              portfolioData[section] = (data.items || []) as Project[];
+              portfolioData[section] = data.items as Project[];
               break;
             case "writing":
-              portfolioData[section] = (data.items || []) as Writing[];
+              portfolioData[section] = data.items as Writing[];
+              break;
+            case "resume":
+              portfolioData.resumeUrl = data.resumeUrl || data.url || null;
+              break;
+          }
+        });
+        return portfolioData;
+      } else {
+        console.log("Documents found, returning data...");
+        const querySnapshot = await getDocs(collectionRef);
+        const portfolioData: Partial<PortfolioData> = {};
+        querySnapshot.forEach((doc: QueryDocumentSnapshot) => {
+          const section = doc.id as PortfolioSection;
+          const data = doc.data();
+          switch (section) {
+            case "hero":
+              portfolioData[section] = data as Hero;
+              break;
+            case "about":
+              portfolioData[section] = data as About;
+              break;
+            case "contact":
+              portfolioData[section] = data as Contact;
+              break;
+            case "experience":
+              portfolioData[section] = data.items as Experience[];
+              break;
+            case "projects":
+              portfolioData[section] = data.items as Project[];
+              break;
+            case "writing":
+              portfolioData[section] = data.items as Writing[];
+              break;
+            case "resume":
+              portfolioData.resumeUrl = data.resumeUrl || data.url || null;
               break;
           }
         });
         return portfolioData;
       }
-      console.log("Documents found, returning data...");
-      const querySnapshot = await getDocs(collectionRef);
-      const portfolioData: Partial<PortfolioData> = {};
-      querySnapshot.forEach((doc: QueryDocumentSnapshot) => {
-        const section = doc.id as PortfolioSection;
-        const data = doc.data();
-        switch (section) {
-          case "hero":
-            portfolioData[section] = data as Hero;
-            break;
-          case "about":
-            portfolioData[section] = data as About;
-            break;
-          case "contact":
-            portfolioData[section] = data as Contact;
-            break;
-          case "experience":
-            portfolioData[section] = (data.items || []) as Experience[];
-            break;
-          case "projects":
-            portfolioData[section] = (data.items || []) as Project[];
-            break;
-          case "writing":
-            portfolioData[section] = (data.items || []) as Writing[];
-            break;
-        }
-      });
-      return portfolioData;
     } catch (error) {
       console.error("Error accessing Firestore:", error);
       throw error;

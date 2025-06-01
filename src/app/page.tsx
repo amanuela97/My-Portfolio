@@ -5,6 +5,7 @@ import { About } from "./components/about";
 import { Experience } from "./components/experience";
 import { Projects } from "./components/projects";
 import { Writings } from "./components/writings";
+import { Footer } from "./components/footer";
 
 export const revalidate = 60; // Revalidate every minute
 
@@ -31,9 +32,10 @@ export default async function HomePage() {
       <main className="flex-1 lg:ml-[400px] p-6 lg:p-12">
         <div className="max-w-3xl mx-auto">
           <About about={data.about} />
-          <Experience experience={data.experience} />
+          <Experience experience={data.experience} resumeUrl={data.resumeUrl} />
           <Projects projects={data.projects} />
           <Writings writings={data.writing} />
+          <Footer />
         </div>
       </main>
     </div>

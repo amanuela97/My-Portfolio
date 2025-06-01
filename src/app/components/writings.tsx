@@ -44,12 +44,14 @@ export function Writings({ writings }: WritingsProps) {
 
       <div className="mt-12 text-center">
         <a
-          href="#"
-          className="inline-flex items-center text-base text-purple-400 hover:text-purple-300 transition-colors"
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://medium.com/@babyzewdie"
+          className="inline-flex items-center text-base text-purple-400 hover:text-purple-300 transition-colors group"
         >
           View Full Writing Archive
           <svg
-            className="ml-2 w-5 h-5"
+            className="ml-2 w-5 h-5 transform transition-transform group-hover:translate-x-1"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"

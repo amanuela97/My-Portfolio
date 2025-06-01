@@ -39,6 +39,7 @@ const initialPortfolioData: PortfolioData = {
   experience: [],
   projects: [],
   writing: [],
+  resumeUrl: null,
 };
 
 // Initialize portfolio data if it doesn't exist
@@ -48,9 +49,10 @@ export const initializePortfolioData = async () => {
     for (const section of sections) {
       const docRef = adminFirestore.doc(`${PORTFOLIO_COLLECTION}/${section}`);
       const docSnap = await docRef.get();
-
       if (!docSnap.exists) {
-        const data = JSON.parse(JSON.stringify(initialPortfolioData[section]));
+        const data = JSON.parse(
+          JSON.stringify(initialPortfolioData[section as keyof PortfolioData])
+        );
         await docRef.set(data);
         console.log(`Initialized ${section} section`);
       }
@@ -88,13 +90,16 @@ export const getPortfolioData = async (): Promise<Partial<PortfolioData>> => {
               portfolioData[section] = data as Contact;
               break;
             case "experience":
-              portfolioData[section] = data as Experience[];
+              portfolioData[section] = data.items as Experience[];
               break;
             case "projects":
-              portfolioData[section] = data as Project[];
+              portfolioData[section] = data.items as Project[];
               break;
             case "writing":
-              portfolioData[section] = data as Writing[];
+              portfolioData[section] = data.items as Writing[];
+              break;
+            case "resume":
+              portfolioData.resumeUrl = data.resumeUrl || data.url || null;
               break;
           }
         });
@@ -117,13 +122,16 @@ export const getPortfolioData = async (): Promise<Partial<PortfolioData>> => {
               portfolioData[section] = data as Contact;
               break;
             case "experience":
-              portfolioData[section] = data as Experience[];
+              portfolioData[section] = data.items as Experience[];
               break;
             case "projects":
-              portfolioData[section] = data as Project[];
+              portfolioData[section] = data.items as Project[];
               break;
             case "writing":
-              portfolioData[section] = data as Writing[];
+              portfolioData[section] = data.items as Writing[];
+              break;
+            case "resume":
+              portfolioData.resumeUrl = data.resumeUrl || data.url || null;
               break;
           }
         });
