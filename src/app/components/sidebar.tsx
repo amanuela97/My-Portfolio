@@ -55,9 +55,9 @@ export function Sidebar({ hero, contact }: SidebarProps) {
         <Image
           src={hero.profileImageUrl || "/placeholder.webp"}
           alt={hero.name}
-          width={140}
-          height={140}
-          className="rounded-full w-40 h-40 object-cover"
+          width={100}
+          height={100}
+          className="rounded-full w-36 h-36 object-cover"
           priority
         />
         <h1 className="text-4xl font-bold text-purple-400 mt-4">{hero.name}</h1>
