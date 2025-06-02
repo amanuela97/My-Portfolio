@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { adminAuth } from "@/app/lib/firebase-admin";
 
+export const runtime = "nodejs";
+
 export async function GET() {
   try {
     const cookieStore = cookies();

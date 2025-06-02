@@ -110,17 +110,56 @@ src/
 
 ## Deployment
 
-1. Build the project:
+### Vercel Deployment Steps
 
-```bash
-npm run build
+1. Push your code to GitHub
+
+2. Create a new project in Vercel and connect it to your GitHub repository
+
+3. In your Vercel project settings, add the following environment variables:
+
+```env
+# Firebase Client Config (same as .env.local)
+NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_auth_domain
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_storage_bucket
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
+NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
+
+# Firebase Admin SDK - IMPORTANT: Special handling required
+FIREBASE_PROJECT_ID=your_project_id
+FIREBASE_CLIENT_EMAIL=your_client_email
+FIREBASE_PRIVATE_KEY_ID=your_private_key_id
+FIREBASE_CLIENT_ID=your_client_id
+# For FIREBASE_PRIVATE_KEY: Replace all newline characters (\n) with actual newlines
+# 1. Copy the private key from your service account JSON
+# 2. Add double quotes around the entire key
+# 3. Keep the newline characters as-is, DO NOT convert them to spaces
+FIREBASE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\nYour\nPrivate\nKey\nHere\n-----END PRIVATE KEY-----\n"
+
+# Application Config
+NEXT_PUBLIC_ALLOWED_EMAILS=email1@example.com,email2@example.com
 ```
 
-2. Deploy to your preferred platform (Vercel recommended):
+4. Important Notes:
+
+   - Make sure `FIREBASE_PROJECT_ID` matches your Firebase project ID exactly
+   - The `FIREBASE_PRIVATE_KEY` must be enclosed in double quotes
+   - Do not modify or remove any newline characters in the private key
+   - All Firebase Admin SDK variables must be present and correct
+
+5. Deploy:
 
 ```bash
 vercel deploy
 ```
+
+6. If you encounter build errors:
+   - Verify all environment variables are set correctly in Vercel
+   - Check that the Firebase Admin SDK credentials match your service account JSON exactly
+   - Ensure the project ID in your Firebase config matches your service account
+   - Try clearing the Vercel build cache and redeploying
 
 ## Security Features
 
