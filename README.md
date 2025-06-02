@@ -52,132 +52,54 @@ A modern, dynamic portfolio website built with Next.js 14, Firebase, and Tailwin
 Create a `.env.local` file in the root directory with the following variables:
 
 ```env
-# Firebase Client Config
+# Firebase Client Config (Required)
 NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key
-NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_auth_domain
-NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
-NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_storage_bucket
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your-app.firebaseapp.com
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=your-project-id
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your-app.appspot.com
 NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
 NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
 
-# Firebase Admin SDK
-FIREBASE_CLIENT_EMAIL=your_client_email
-FIREBASE_PRIVATE_KEY=your_private_key
+# Firebase Admin SDK (Required)
+FIREBASE_PROJECT_ID=your_project_id
+FIREBASE_CLIENT_EMAIL=your-service-account@your-project.iam.gserviceaccount.com
 FIREBASE_PRIVATE_KEY_ID=your_private_key_id
 FIREBASE_CLIENT_ID=your_client_id
+# IMPORTANT: For FIREBASE_PRIVATE_KEY
+# 1. Copy the entire private key from your service account JSON INCLUDING the quotes
+# 2. The value should look exactly like this (with quotes and \n):
+FIREBASE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSj\n...rest of your key...\n-----END PRIVATE KEY-----\n"
 
-# Application Config
+# Application Config (Required)
 NEXT_PUBLIC_ALLOWED_EMAILS=email1@example.com,email2@example.com
 ```
+
+### Getting Firebase Configuration Values
+
+1. **Client Config Values:**
+
+   - Go to Firebase Console > Project Settings > General
+   - Scroll down to "Your apps" section
+   - Click the web app icon (</>)
+   - Register app if you haven't already
+   - Copy the configuration values from the provided config object
+
+2. **Admin SDK Values:**
+
+   - Go to Firebase Console > Project Settings > Service Accounts
+   - Click "Generate New Private Key"
+   - This will download a JSON file containing all admin SDK credentials
+   - Copy values from this JSON file to your environment variables
+
+3. **Vercel Deployment:**
+   - Add ALL of the above environment variables to your Vercel project settings
+   - Make sure to copy the FIREBASE_PRIVATE_KEY exactly as shown above
+   - Double-check that NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN matches your Firebase app domain
 
 ## Installation
 
 1. Clone the repository:
 
-```bash
-git clone https://github.com/yourusername/portfolio.git
-cd portfolio
 ```
 
-2. Install dependencies:
-
-```bash
-npm install
 ```
-
-3. Run the development server:
-
-```bash
-npm run dev
-```
-
-4. Open [http://localhost:3000](http://localhost:3000) in your browser.
-
-## Project Structure
-
-```
-src/
-├── app/                    # Next.js app directory
-│   ├── admin/             # Admin dashboard
-│   ├── api/               # API routes
-│   ├── components/        # React components
-│   ├── hooks/             # Custom React hooks
-│   ├── lib/               # Utility functions and configs
-│   └── login/             # Login page
-├── public/                # Static assets
-└── types/                 # TypeScript type definitions
-```
-
-## Deployment
-
-### Vercel Deployment Steps
-
-1. Push your code to GitHub
-
-2. Create a new project in Vercel and connect it to your GitHub repository
-
-3. In your Vercel project settings, add the following environment variables:
-
-```env
-# Firebase Client Config (same as .env.local)
-NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key
-NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_auth_domain
-NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
-NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_storage_bucket
-NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
-NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
-
-# Firebase Admin SDK - IMPORTANT: Special handling required
-FIREBASE_PROJECT_ID=your_project_id
-FIREBASE_CLIENT_EMAIL=your_client_email
-FIREBASE_PRIVATE_KEY_ID=your_private_key_id
-FIREBASE_CLIENT_ID=your_client_id
-# For FIREBASE_PRIVATE_KEY: Replace all newline characters (\n) with actual newlines
-# 1. Copy the private key from your service account JSON
-# 2. Add double quotes around the entire key
-# 3. Keep the newline characters as-is, DO NOT convert them to spaces
-FIREBASE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\nYour\nPrivate\nKey\nHere\n-----END PRIVATE KEY-----\n"
-
-# Application Config
-NEXT_PUBLIC_ALLOWED_EMAILS=email1@example.com,email2@example.com
-```
-
-4. Important Notes:
-
-   - Make sure `FIREBASE_PROJECT_ID` matches your Firebase project ID exactly
-   - The `FIREBASE_PRIVATE_KEY` must be enclosed in double quotes
-   - Do not modify or remove any newline characters in the private key
-   - All Firebase Admin SDK variables must be present and correct
-
-5. Deploy:
-
-```bash
-vercel deploy
-```
-
-6. If you encounter build errors:
-   - Verify all environment variables are set correctly in Vercel
-   - Check that the Firebase Admin SDK credentials match your service account JSON exactly
-   - Ensure the project ID in your Firebase config matches your service account
-   - Try clearing the Vercel build cache and redeploying
-
-## Security Features
-
-- Protected admin routes with middleware
-- Session-based authentication
-- Email allowlist for admin access
-- Secure cookie handling
-- Environment variable protection
-- Firebase security rules
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Open a pull request
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
